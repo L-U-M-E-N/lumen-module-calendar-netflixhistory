@@ -16,12 +16,12 @@ module.exports = class NetflixCalendar {
 		});
 	}
 
-	static importNetflixActivity() {
+	static async importNetflixActivity() {
 		const file = fs.readFileSync(FILENAME).toString();
 
-		for(const line of file.split('\n')) {
+		await Promise.allSettled(file.split('\n').map(async(line) => {
 			if(!line.startsWith(calendarCfg.netflix.username + ',')) {
-				continue;
+				return;
 			}
 
 			const elements = line.split(',');
@@ -45,13 +45,15 @@ module.exports = class NetflixCalendar {
 
 			//console.log(field);
 
-			const [query, values] = Database.buildInsertQuery('calendar', field);
+			if((await Database.execQuery('SELECT id FROM calendar WHERE id = $1', [id])).rows.length === 0) {
+				const [query, values] = Database.buildInsertQuery('calendar', field);
 
-			Database.execQuery(
-				query,
-				values
-			);
-		}
+				Database.execQuery(
+					query,
+					values
+				);
+			}
+		}));
 
 		log('Saved Netflix Activity', 'info');
 	}
