@@ -1,9 +1,9 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 const FILENAME = path.join(process.cwd(), 'res/netflix/ViewingActivity.csv');
 
-module.exports = class NetflixCalendar {
+export default class NetflixCalendar {
 	static init() {
 		NetflixCalendar.importNetflixActivity();
 
