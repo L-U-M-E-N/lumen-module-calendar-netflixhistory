@@ -59,7 +59,7 @@ export default class NetflixCalendar {
 		const file = fs.readFileSync(FILENAME).toString();
 
 		await Promise.allSettled(file.split('\n').map(async(line) => {
-			if(!line.startsWith(calendarCfg.netflix.username + ',')) {
+			if(!line.startsWith(global.config.netflix.username + ',')) {
 				return;
 			}
 
