@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const FILENAME = path.join(process.cwd(), 'res/netflix/ViewingActivity.csv');
+const FILENAME = path.join(config['netflix']['folder'], 'ViewingActivity.csv');
 
 export default class NetflixCalendar {
 	static init() {
