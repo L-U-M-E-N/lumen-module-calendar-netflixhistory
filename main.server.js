@@ -5,7 +5,7 @@ export default class NetflixCalendar {
 	static init() {
 		NetflixCalendar.importNetflixActivity();
 
-		const watcher = fs.watch(path.join(config['netflix']['folder'], 'ViewingActivity.csv'), { persistent: false }, (curr, prev) => {
+		const watcher = fs.watch(path.join(config['folder'], 'ViewingActivity.csv'), { persistent: false }, (curr, prev) => {
 			watcher.close();
 
 			log('./reloading.STATS.Netflix', 'boot');
@@ -54,10 +54,10 @@ export default class NetflixCalendar {
 		)).rows[0].min;
 		minDate.setHours(minDate.getHours() - 6); // Safety margin
 
-		const file = fs.readFileSync(path.join(config['netflix']['folder'], 'ViewingActivity.csv')).toString();
+		const file = fs.readFileSync(path.join(config['folder'], 'ViewingActivity.csv')).toString();
 
 		await Promise.allSettled(file.split('\n').map(async(line) => {
-			if(!line.startsWith(global.config.netflix.username + ',')) {
+			if(!line.startsWith(config.username + ',')) {
 				return;
 			}
 
